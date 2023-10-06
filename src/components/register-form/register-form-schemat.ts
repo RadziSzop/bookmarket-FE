@@ -12,5 +12,4 @@ export const registerFormSchema = z.object({
     .max(255)
     .optional()
     .or(z.literal("")),
-  confirmPassword: z.string(),
 });

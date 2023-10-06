@@ -75,7 +75,7 @@ export const RegisterForm = () => {
   };
 
   return (
-    <div className="w-80">
+    <div className="h-full flex justify-center items-center">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="grid">
           <FormField

@@ -3,6 +3,7 @@ import { UserNav } from "./UserNav";
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
 import { Button } from "../ui/button";
+import { ModeToggle } from "../theme-provider/mode-toggle";
 
 export const Navbar = () => {
   const tokens = useSelector((state: RootState) => state.token.tokens);
@@ -31,6 +32,8 @@ export const Navbar = () => {
           </Link>
         </nav>
         <div className="ml-auto flex items-center space-x-4">
+          <ModeToggle />
+
           {tokens ? (
             <UserNav />
           ) : (
