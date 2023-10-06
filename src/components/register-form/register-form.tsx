@@ -70,6 +70,7 @@ export const RegisterForm = () => {
     },
   });
   const onSubmit = (values: z.infer<typeof registerFormSchema>) => {
+    console.log(values);
     mutate(values);
   };
 
