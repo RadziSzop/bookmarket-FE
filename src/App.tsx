@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import { Navbar } from "./components/navbar/Navbar";
 import { Login } from "./pages/Login/Login";
-import { RegisterForm } from "./components/register-form/register-form";
+import { ProfileSettings } from "./components/profile-settings/profile-settings";
 
 function App() {
   return (
@@ -9,8 +9,8 @@ function App() {
       <Navbar />
       <div className="h-[calc(100vh-57px)]">
         <Routes>
-          <Route path="/books" element={<RegisterForm />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/profile/settings" element={<ProfileSettings />} />
         </Routes>
       </div>
     </>

@@ -12,13 +12,16 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import axios, { isAxiosError } from "axios";
-import type { ApiResponseFailure, RegisterResponse } from "../types/response";
+import type {
+  ApiResponseFailure,
+  RegisterResponse,
+} from "../types/response.ts";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { registerFormSchema } from "./register-form-schemat.ts";
+import { registerFormSchema } from "./profile-settings-schema.ts";
 import { useMutation } from "@tanstack/react-query";
 
-export const RegisterForm = () => {
+export const ProfileSettings = () => {
   const navigate = useNavigate();
 
   const form = useForm<z.infer<typeof registerFormSchema>>({
@@ -54,23 +57,22 @@ export const RegisterForm = () => {
             .join("\n");
           toast.error(errors);
         } else {
-          toast.error("An error occurred, please try again later.");
+          toast.error("Wystąpił błąd, spróbuj ponownie.");
         }
       } else {
-        toast.error("An error occurred, please try again later.");
+        toast.error("Wystąpił błąd, spróbuj ponownie.");
       }
     },
     onSuccess: async (data) => {
       if (data.data.response.success) {
         navigate("/verify");
+        toast.success("Udało się przesłać dane!");
       } else {
-        toast.error("An error occurred, please try again later.");
+        toast.error("Wystąpił błąd, spróbuj ponownie.");
       }
-      console.log(data);
     },
   });
   const onSubmit = (values: z.infer<typeof registerFormSchema>) => {
-    console.log(values);
     mutate(values);
   };
 
@@ -101,9 +103,9 @@ export const RegisterForm = () => {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Dodatkowy adres email</FormLabel>
+                <FormLabel>Dodatkowy adres e-mail</FormLabel>
                 <FormControl>
-                  <Input placeholder="Email" {...field} type="email" />
+                  <Input placeholder="E-mail" {...field} type="email" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
