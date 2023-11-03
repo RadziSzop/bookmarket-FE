@@ -18,13 +18,12 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import axios, { isAxiosError } from "axios";
+import { isAxiosError } from "axios";
 import type {
   ApiResponseFailure,
   RegisterResponse,
 } from "../../types/response.ts";
 import { toast } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
 import { addProductSchema } from "./add-product-schema.ts";
 import { useMutation } from "@tanstack/react-query";
 import {
@@ -34,24 +33,82 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { DropZone } from "../dropzone/DropZone.tsx";
+import { useState } from "react";
+import { apiAuth } from "@/lib/axios.ts";
+import { ScrollArea } from "../ui/scroll-area.tsx";
 
 export const AddProduct = () => {
-  const navigate = useNavigate();
+  const [submitedFile, setSubmitedFile] = useState<File>();
   const form = useForm<z.infer<typeof addProductSchema>>({
     resolver: zodResolver(addProductSchema),
     defaultValues: {
       title: "",
-      class: "",
-      subject: "",
-      price: 0.01,
+      class: "1",
+      condition: undefined,
+      subject: undefined,
+      price: "5",
     },
   });
-
+  const classes: [number, string][] = [
+    [1, "1"],
+    [2, "2"],
+    [3, "3"],
+    [4, "4"],
+    [5, "5"],
+  ];
+  const conditions: [number, string][] = [
+    [1, "Nowa"],
+    [2, "Lekko zużyta"],
+    [3, "Używana"],
+    [4, "Zniszczona"],
+  ];
+  const subjects = [
+    "Matematyka",
+    "Polski",
+    "Angielski",
+    "Niemiecki",
+    "Historia",
+    "Biologia",
+    "Chemia",
+    "Fizyka",
+    "Geografia",
+    "WOS",
+    "Informatyka",
+    "Plastyka",
+    "Muzyka",
+    "Religia",
+    "WF",
+    "Technika",
+    "Przyroda",
+    "Inne",
+  ];
   const { mutate, isLoading } = useMutation({
     mutationFn: async (data: z.infer<typeof addProductSchema>) => {
-      const response = await axios.post<RegisterResponse>(
-        `${import.meta.env.VITE_API_URL}/auth/register`,
-        { title: data.title, class: data.class },
+      const getBase64 = (file, cb) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function () {
+          cb(reader.result);
+        };
+        reader.onerror = function (error) {
+          console.log("Error: ", error);
+        };
+      };
+      let image: string;
+      getBase64(submitedFile, (result) => {
+        image = result;
+      });
+      const response = await apiAuth.post<RegisterResponse>(
+        "/store",
+        {
+          title: data.title,
+          class: Number(data.class),
+          subject: data.subject,
+          price: Number(data.price) * 100,
+          condition: Number(data.condition),
+          image: submitedFile,
+        },
         {
           timeout: 20000,
         }
@@ -80,8 +137,8 @@ export const AddProduct = () => {
     },
     onSuccess: async (data) => {
       if (data.data.success) {
-        navigate("/verify");
-        toast.success("Udało się przesłać dane!");
+        // form.reset();
+        toast.success("Dodano książke!");
       } else {
         toast.error("Wystąpił błąd, spróbuj ponownie.");
       }
@@ -102,6 +159,10 @@ export const AddProduct = () => {
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="grid">
+              <p className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                Zdjęcie
+              </p>
+              <DropZone setSubmitedFile={setSubmitedFile} />
               <FormField
                 control={form.control}
                 name="title"
@@ -115,15 +176,30 @@ export const AddProduct = () => {
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={form.control}
                 name="class"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Klasa</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Klasa" {...field} type="number" />
-                    </FormControl>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Wybierz" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {classes.map(([value, label]) => (
+                          <SelectItem key={value} value={String(value)}>
+                            {label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -134,9 +210,25 @@ export const AddProduct = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Przedmiot</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Przedmiot" {...field} type="text" />
-                    </FormControl>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Wybierz" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent className="max-h-[15.25rem]">
+                        <ScrollArea>
+                          {subjects.map((value) => (
+                            <SelectItem key={value} value={String(value)}>
+                              {value}
+                            </SelectItem>
+                          ))}
+                        </ScrollArea>
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -156,7 +248,7 @@ export const AddProduct = () => {
               />
               <FormField
                 control={form.control}
-                name="durabilty"
+                name="condition"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Zużycie</FormLabel>
@@ -170,17 +262,11 @@ export const AddProduct = () => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="Factory_new">Factory_new</SelectItem>
-                        <SelectItem value="Minimal_wear">
-                          Minimal_wear
-                        </SelectItem>
-                        <SelectItem value="Field_tested">
-                          Field_tested
-                        </SelectItem>
-                        <SelectItem value="Well_worn">Well_worn</SelectItem>
-                        <SelectItem value="Battle_scarred">
-                          Battle_scarred
-                        </SelectItem>
+                        {conditions.map(([value, label]) => (
+                          <SelectItem key={value} value={String(value)}>
+                            {label}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     <FormMessage />
