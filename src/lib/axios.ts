@@ -1,4 +1,4 @@
-import { RefreshResponse } from "@/components/types/response";
+import { RefreshResponse } from "@/types/response";
 import { setToken } from "@/redux/features/tokenSlice";
 import { store } from "@/redux/store";
 import axios from "axios";

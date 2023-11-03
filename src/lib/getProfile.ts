@@ -3,7 +3,7 @@ import { removeToken } from "@/redux/features/tokenSlice";
 import { store } from "@/redux/store";
 import { apiAuth } from "./axios";
 import cookie from "js-cookie";
-import { ProfileResponse } from "@/components/types/response";
+import { ProfileResponse } from "@/types/response";
 
 export const getProfile = async (token: string) => {
   try {

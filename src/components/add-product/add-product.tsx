@@ -22,7 +22,7 @@ import axios, { isAxiosError } from "axios";
 import type {
   ApiResponseFailure,
   RegisterResponse,
-} from "../types/response.ts";
+} from "../../types/response.ts";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { addProductSchema } from "./add-product-schema.ts";
@@ -46,13 +46,6 @@ export const AddProduct = () => {
       price: 0.01,
     },
   });
-  //
-  //
-  // axios post do zmiany o.O
-  // sad emote
-  //nie ma radka i nie umiem axiosa nie wiem ocb
-  //pozdrawiam
-  //
 
   const { mutate, isLoading } = useMutation({
     mutationFn: async (data: z.infer<typeof addProductSchema>) => {
@@ -72,7 +65,7 @@ export const AddProduct = () => {
           error.response.status !== 404 &&
           error.response.status < 500
         ) {
-          const errors = error.response.data.response.errors
+          const errors = error.response.data.errors
             .map(({ message }) => {
               return message;
             })
@@ -86,7 +79,7 @@ export const AddProduct = () => {
       }
     },
     onSuccess: async (data) => {
-      if (data.data.response.success) {
+      if (data.data.success) {
         navigate("/verify");
         toast.success("Udało się przesłać dane!");
       } else {
@@ -129,7 +122,7 @@ export const AddProduct = () => {
                   <FormItem>
                     <FormLabel>Klasa</FormLabel>
                     <FormControl>
-                      <Input placeholder="Klasa" {...field} type="text" />
+                      <Input placeholder="Klasa" {...field} type="number" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Token } from "@/components/types/response";
+import { Token } from "@/types/response";
 import { setToken } from "@/redux/features/tokenSlice";
 import { getProfile } from "@/lib/getProfile";
 export const Login = () => {

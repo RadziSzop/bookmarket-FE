@@ -3,7 +3,7 @@ import { store } from "@/redux/store";
 import { getProfile } from "./getProfile";
 import cookie from "js-cookie";
 import { removeProfile } from "@/redux/features/profileSlice";
-import { Token } from "@/components/types/response";
+import { Token } from "@/types/response";
 
 export const loginFromCookie = async () => {
   try {

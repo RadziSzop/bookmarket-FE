@@ -15,7 +15,7 @@ import axios, { isAxiosError } from "axios";
 import type {
   ApiResponseFailure,
   RegisterResponse,
-} from "../types/response.ts";
+} from "../../types/response.ts";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { registerFormSchema } from "./profile-settings-schema.ts";
