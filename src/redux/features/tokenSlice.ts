@@ -1,18 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
-export interface Tokens {
-  accessToken: {
-    token: string;
-    expireDate: number;
-  };
-  refreshToken: {
-    token: string;
-    expireDate: number;
-  };
-}
 export interface TokenState {
-  tokens: Tokens | null;
+  tokens: {
+    accessToken: {
+      token: string;
+      expireDate: number;
+    };
+    refreshToken: {
+      token: string;
+      expireDate: number;
+    };
+  } | null;
 }
 
 const initialState: TokenState = {
