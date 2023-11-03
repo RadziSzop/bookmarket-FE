@@ -3,7 +3,6 @@ import { Navbar } from "./components/navbar/Navbar";
 import { Login } from "./pages/Login/Login";
 import { ProfileSettings } from "./components/profile-settings/profile-settings";
 import { AddProduct } from "./components/add-product/add-product";
-import { RegisterForm } from "./components/register-form/register-form";
 import { useEffect } from "react";
 import { loginFromCookie } from "./lib/loginFromCookie";
 

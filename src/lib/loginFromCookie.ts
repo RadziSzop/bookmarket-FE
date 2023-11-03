@@ -1,15 +1,15 @@
-import { Tokens, removeToken, setToken } from "@/redux/features/tokenSlice";
+import { removeToken, setToken } from "@/redux/features/tokenSlice";
 import { store } from "@/redux/store";
 import { getProfile } from "./getProfile";
 import cookie from "js-cookie";
 import { removeProfile } from "@/redux/features/profileSlice";
+import { Token } from "@/components/types/response";
 
 export const loginFromCookie = async () => {
   try {
     const tokens = cookie.get("token")
-      ? (JSON.parse(cookie.get("token")!) as Tokens)
+      ? (JSON.parse(cookie.get("token")!) as Token)
       : null;
-    console.log({ tokens });
 
     if (tokens) {
       store.dispatch(setToken({ tokens: tokens }));
@@ -17,8 +17,8 @@ export const loginFromCookie = async () => {
     }
   } catch (error) {
     console.log("login from cookie error: ", error);
-    // cookie.remove("token");
-    // store.dispatch(removeProfile);
-    // store.dispatch(removeToken);
+    cookie.remove("token");
+    store.dispatch(removeProfile);
+    store.dispatch(removeToken);
   }
 };

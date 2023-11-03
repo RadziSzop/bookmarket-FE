@@ -1,8 +1,6 @@
 interface ApiResponseSuccess<T> {
-  response: {
-    success: boolean;
-    data: T;
-  };
+  success: boolean;
+  data: T;
 }
 export interface Token {
   accessToken: {
@@ -15,14 +13,12 @@ export interface Token {
   };
 }
 export interface ApiResponseFailure {
-  response: {
-    success: false;
-    errors: {
-      message: string;
-      errorCode: number;
-      field?: string;
-    }[];
-  };
+  success: false;
+  errors: {
+    message: string;
+    errorCode: number;
+    field?: string;
+  }[];
 }
 export type RegisterResponse = ApiResponseSuccess<{
   message: string;
