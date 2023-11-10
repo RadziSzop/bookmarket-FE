@@ -85,30 +85,18 @@ export const AddProduct = () => {
   ];
   const { mutate, isLoading } = useMutation({
     mutationFn: async (data: z.infer<typeof addProductSchema>) => {
-      const getBase64 = (file, cb) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = function () {
-          cb(reader.result);
-        };
-        reader.onerror = function (error) {
-          console.log("Error: ", error);
-        };
-      };
-      let image: string;
-      getBase64(submitedFile, (result) => {
-        image = result;
-      });
+      const formData = new FormData();
+      formData.append("image", submitedFile!);
+      formData.append("title", data.title);
+      formData.append("class", data.class!);
+      if (data.subject) {
+        formData.append("subject", data.subject!);
+      }
+      formData.append("price", data.price);
+      formData.append("condition", data.condition!);
       const response = await apiAuth.post<RegisterResponse>(
         "/store",
-        {
-          title: data.title,
-          class: Number(data.class),
-          subject: data.subject,
-          price: Number(data.price) * 100,
-          condition: Number(data.condition),
-          image: submitedFile,
-        },
+        formData,
         {
           timeout: 20000,
         }
@@ -137,7 +125,8 @@ export const AddProduct = () => {
     },
     onSuccess: async (data) => {
       if (data.data.success) {
-        // form.reset();
+        form.reset();
+        form.reset();
         toast.success("Dodano książke!");
       } else {
         toast.error("Wystąpił błąd, spróbuj ponownie.");
@@ -145,7 +134,11 @@ export const AddProduct = () => {
     },
   });
   const onSubmit = (values: z.infer<typeof addProductSchema>) => {
-    mutate(values);
+    if (!submitedFile) {
+      toast.error("Dodaj zdjęcie");
+    } else {
+      mutate(values);
+    }
   };
   return (
     <div className="h-full flex justify-center items-center">
@@ -158,11 +151,14 @@ export const AddProduct = () => {
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="grid">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-2">
               <p className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                 Zdjęcie
               </p>
-              <DropZone setSubmitedFile={setSubmitedFile} />
+              <DropZone
+                setSubmitedFile={setSubmitedFile}
+                submitedFile={submitedFile}
+              />
               <FormField
                 control={form.control}
                 name="title"

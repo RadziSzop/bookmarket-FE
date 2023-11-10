@@ -1,41 +1,54 @@
 import { Plus } from "lucide-react";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import toast from "react-hot-toast";
 
 interface Props {
   setSubmitedFile: React.Dispatch<React.SetStateAction<File | undefined>>;
+  submitedFile: File | undefined;
 }
-export const DropZone = ({ setSubmitedFile }: Props) => {
+export const DropZone = ({ setSubmitedFile, submitedFile }: Props) => {
   const onDrop = useCallback(
     (acceptedFile: File[]) => {
-      setSubmitedFile(acceptedFile[0]);
+      if (acceptedFile[0]) {
+        setSubmitedFile(acceptedFile[0]);
+      } else {
+        toast.error("Niepoprawny plik");
+      }
     },
     [setSubmitedFile]
   );
-
   const {
     getRootProps,
     getInputProps,
     isDragActive,
     isDragAccept,
     isDragReject,
+    rootRef,
   } = useDropzone({
     onDrop,
     onDropRejected: () => {
       toast.error("Może dać tylko 1 plik jpg lub png");
     },
     accept: {
-      "image/jpeg": [".jpeg", "jpg"],
       "image/png": [".png"],
+      "image/jpeg": [".jpg", ".jpeg"],
     },
+    multiple: false,
     maxFiles: 1,
   });
+  useEffect(() => {
+    if (submitedFile && rootRef.current) {
+      rootRef.current.style.backgroundImage = `url(${URL.createObjectURL(
+        submitedFile
+      )})`;
+    }
+  }, [submitedFile, rootRef]);
 
   return (
     <div
-      {...getRootProps({ isDragAccept, isDragReject })}
-      className={`cursor-pointer flex-[1] flex flex-col items-center justify-center transition-colors p-2 mt-4 mb-2 text-center m-auto w-full h-28 border-2 "bg-zinc-900" rounded-md border-dashed outline-none ${
+      {...getRootProps()}
+      className={`cursor-pointer flex-[1] flex bg-cover flex-col items-center justify-center transition-colors p-2 mt-4 mb-2 text-center m-auto w-full h-28 border-2 "bg-zinc-900" rounded-md border-dashed outline-none ${
         isDragReject
           ? "border-red-700"
           : isDragAccept

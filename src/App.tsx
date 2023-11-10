@@ -5,6 +5,7 @@ import { ProfileSettings } from "./components/profile-settings/profile-settings"
 import { AddProduct } from "./components/add-product/add-product";
 import { useEffect } from "react";
 import { loginFromCookie } from "./lib/loginFromCookie";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   useEffect(() => {
@@ -21,6 +22,15 @@ function App() {
           <Route path="/profile/settings" element={<ProfileSettings />} />
           <Route path="/addproduct" element={<AddProduct />} />
         </Routes>
+        <Toaster
+          toastOptions={{
+            style: {
+              borderRadius: "10px",
+              background: "#333",
+              color: "#fff",
+            },
+          }}
+        />
       </div>
     </>
   );
