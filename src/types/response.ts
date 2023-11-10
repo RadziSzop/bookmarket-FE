@@ -37,3 +37,33 @@ export type ProfileResponse = ApiResponseSuccess<{
     contactEmail?: string;
   };
 }>;
+type Subject =
+  | "Matematyka"
+  | "Polski"
+  | "Angielski"
+  | "Niemiecki"
+  | "Historia"
+  | "Biologia"
+  | "Chemia"
+  | "Fizyka"
+  | "Geografia"
+  | "WOS"
+  | "Informatyka"
+  | "Plastyka"
+  | "Muzyka"
+  | "Religia"
+  | "WF"
+  | "Technika"
+  | "Przyroda"
+  | "Inne";
+export type StoreResponse = ApiResponseSuccess<
+  {
+    class: number;
+    condition: number;
+    id: number;
+    image: string;
+    price: number;
+    subject: Subject | null;
+    title: string;
+  }[]
+>;

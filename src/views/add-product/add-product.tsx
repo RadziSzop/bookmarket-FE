@@ -33,10 +33,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { DropZone } from "../dropzone/DropZone.tsx";
+import { DropZone } from "../../components/dropzone/DropZone.tsx";
 import { useState } from "react";
 import { apiAuth } from "@/lib/axios.ts";
-import { ScrollArea } from "../ui/scroll-area.tsx";
+import { ScrollArea } from "../../components/ui/scroll-area.tsx";
 
 export const AddProduct = () => {
   const [submitedFile, setSubmitedFile] = useState<File>();
