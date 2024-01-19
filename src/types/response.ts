@@ -67,3 +67,12 @@ export type StoreResponse = ApiResponseSuccess<
     title: string;
   }[]
 >;
+export type BookResponse = ApiResponseSuccess<{
+  class: number;
+  condition: number;
+  id: number;
+  image: string;
+  price: number;
+  subject: Subject | null;
+  title: string;
+}>;
