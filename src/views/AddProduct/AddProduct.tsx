@@ -32,7 +32,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/Select";
+} from "@/components/ui/Select.tsx";
 import { DropZone } from "../../components/Dropzone/DropZone.tsx";
 import { useState } from "react";
 import { apiAuth } from "@/lib/axios.ts";
