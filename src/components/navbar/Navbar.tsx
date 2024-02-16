@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { UserNav } from "./UserNav";
+import { UserNav } from "./UserNav.tsx";
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
 import { Button } from "../ui/Button";
