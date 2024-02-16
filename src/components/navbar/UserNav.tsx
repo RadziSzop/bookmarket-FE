@@ -9,8 +9,14 @@ import {
   DropdownMenuItem,
 } from "../ui/DropdownMenu";
 import { Button } from "../ui/Button";
+import { logout } from "@/lib/logout";
+import { Link } from "react-router-dom";
 
-export const UserNav = () => {
+interface Props {
+  email: string;
+}
+
+export const UserNav = ({ email }: Props) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -24,18 +30,24 @@ export const UserNav = () => {
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">email</p>
-            <p className="text-xs leading-none text-muted-foreground">hobby</p>
+            <p className="text-sm font-medium leading-none">
+              {email.slice(0, 24)}...
+            </p>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>Profile</DropdownMenuItem>
-          <DropdownMenuItem>Billing</DropdownMenuItem>
-          <DropdownMenuItem>Settings</DropdownMenuItem>
+          <Link to={"profile/settings"}>
+            <DropdownMenuItem>Ustawienia</DropdownMenuItem>
+          </Link>
         </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>Log out</DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => {
+            logout(true);
+          }}
+        >
+          Wyloguj
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

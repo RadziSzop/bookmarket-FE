@@ -6,7 +6,7 @@ import { Button } from "../ui/Button";
 import { ModeToggle } from "../ThemeProvider/ModeToggle";
 
 export const Navbar = () => {
-  const tokens = useSelector((state: RootState) => state.token.tokens);
+  const profile = useSelector((state: RootState) => state.profile.profile);
 
   return (
     <div className="border-b">
@@ -34,8 +34,8 @@ export const Navbar = () => {
         <div className="ml-auto flex items-center space-x-4">
           <ModeToggle />
 
-          {tokens ? (
-            <UserNav />
+          {profile ? (
+            <UserNav email={profile.email} />
           ) : (
             <a href={`${import.meta.env.VITE_API_URL}/login`}>
               <Button>Zaloguj</Button>
