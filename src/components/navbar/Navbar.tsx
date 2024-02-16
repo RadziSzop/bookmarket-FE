@@ -2,8 +2,8 @@ import { Link } from "react-router-dom";
 import { UserNav } from "./UserNav";
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
-import { Button } from "../ui/button";
-import { ModeToggle } from "../theme-provider/mode-toggle";
+import { Button } from "../ui/Button";
+import { ModeToggle } from "../ThemeProvider/ModeToggle";
 
 export const Navbar = () => {
   const tokens = useSelector((state: RootState) => state.token.tokens);

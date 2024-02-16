@@ -1,12 +1,12 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/Button.tsx";
+import { Input } from "@/components/ui/Input.tsx";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@/components/ui/Card.tsx";
 import type { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,14 +17,14 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
+} from "@/components/ui/Form.tsx";
 import { isAxiosError } from "axios";
 import type {
   ApiResponseFailure,
   RegisterResponse,
 } from "../../types/response.ts";
 import { toast } from "react-hot-toast";
-import { addProductSchema } from "./add-product-schema.ts";
+import { addProductSchema } from "./AddProductSchema.ts";
 import { useMutation } from "@tanstack/react-query";
 import {
   Select,
@@ -32,11 +32,11 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { DropZone } from "../../components/dropzone/DropZone.tsx";
+} from "@/components/ui/Select";
+import { DropZone } from "../../components/Dropzone/DropZone.tsx";
 import { useState } from "react";
 import { apiAuth } from "@/lib/axios.ts";
-import { ScrollArea } from "../../components/ui/scroll-area.tsx";
+import { ScrollArea } from "../../components/ui/ScrollArea.tsx";
 
 export const AddProduct = () => {
   const [submitedFile, setSubmitedFile] = useState<File>();

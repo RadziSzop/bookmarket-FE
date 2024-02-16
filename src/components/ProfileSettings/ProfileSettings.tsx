@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/Button.tsx";
+import { Input } from "@/components/ui/Input.tsx";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,7 +10,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
+} from "@/components/ui/Form.tsx";
 import axios, { isAxiosError } from "axios";
 import type {
   ApiResponseFailure,
@@ -18,7 +18,7 @@ import type {
 } from "../../types/response.ts";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { registerFormSchema } from "./profile-settings-schema.ts";
+import { registerFormSchema } from "./ProfileSettingsSchema.ts";
 import { useMutation } from "@tanstack/react-query";
 
 export const ProfileSettings = () => {
@@ -50,7 +50,7 @@ export const ProfileSettings = () => {
           error.response.status !== 404 &&
           error.response.status < 500
         ) {
-          const errors = error.response.data.response.errors
+          const errors = error.response.data.errors
             .map(({ message }) => {
               return message;
             })
@@ -64,7 +64,7 @@ export const ProfileSettings = () => {
       }
     },
     onSuccess: async (data) => {
-      if (data.data.response.success) {
+      if (data.data.success) {
         navigate("/verify");
         toast.success("Udało się przesłać dane!");
       } else {

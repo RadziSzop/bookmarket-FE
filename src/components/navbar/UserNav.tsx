@@ -1,4 +1,4 @@
-import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "../ui/Avatar";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -7,8 +7,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuGroup,
   DropdownMenuItem,
-} from "../ui/dropdown-menu";
-import { Button } from "../ui/button";
+} from "../ui/DropdownMenu";
+import { Button } from "../ui/Button";
 
 export const UserNav = () => {
   return (
