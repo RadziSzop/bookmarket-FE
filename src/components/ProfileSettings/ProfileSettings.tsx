@@ -31,8 +31,6 @@ export const ProfileSettings = () => {
 
   const { mutate, isLoading } = useMutation({
     mutationFn: async (data: z.infer<typeof profileUpdateSchema>) => {
-      console.log(data);
-
       const response = await apiAuth.put<ProfileUpdateResponse>(
         `${import.meta.env.VITE_API_URL}/profile`,
         { extraContact: data.extraContact }
@@ -61,7 +59,7 @@ export const ProfileSettings = () => {
     },
     onSuccess: async (data) => {
       if (data.data.success) {
-        navigate("/verify");
+        navigate("/");
         toast.success("Udało się przesłać dane!");
       } else {
         toast.error("Wystąpił błąd, spróbuj ponownie.");
@@ -69,7 +67,11 @@ export const ProfileSettings = () => {
     },
   });
   const onSubmit = (values: z.infer<typeof profileUpdateSchema>) => {
-    mutate(values);
+    if (form.getValues().extraContact.length > 0) {
+      mutate(values);
+    } else {
+      navigate("/");
+    }
   };
   const { fields, append } = useFieldArray({
     control: form.control,
