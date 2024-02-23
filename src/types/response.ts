@@ -23,6 +23,11 @@ export interface ApiResponseFailure {
 export type RegisterResponse = ApiResponseSuccess<{
   message: string;
 }>;
+
+export type ProfileUpdateResponse = {
+  success: boolean;
+};
+
 export type RefreshResponse = ApiResponseSuccess<{
   message: string;
   token: Token;

@@ -94,13 +94,7 @@ export const AddProduct = () => {
       }
       formData.append("price", data.price);
       formData.append("condition", data.condition!);
-      const response = await apiAuth.post<RegisterResponse>(
-        "/store",
-        formData,
-        {
-          timeout: 20000,
-        }
-      );
+      const response = await apiAuth.post<RegisterResponse>("/store", formData);
       return response;
     },
     onError: (error) => {

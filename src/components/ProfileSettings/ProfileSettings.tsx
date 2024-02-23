@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/Button.tsx";
 import { Input } from "@/components/ui/Input.tsx";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import type { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -11,35 +11,31 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/Form.tsx";
-import axios, { isAxiosError } from "axios";
+import { isAxiosError } from "axios";
 import type {
   ApiResponseFailure,
-  RegisterResponse,
+  ProfileUpdateResponse,
 } from "../../types/response.ts";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { registerFormSchema } from "./ProfileSettingsSchema.ts";
+import { profileUpdateSchema } from "./ProfileSettingsSchema.ts";
 import { useMutation } from "@tanstack/react-query";
+import { FiPlus } from "react-icons/fi";
+import { apiAuth } from "@/lib/axios.ts";
 
 export const ProfileSettings = () => {
   const navigate = useNavigate();
-
-  const form = useForm<z.infer<typeof registerFormSchema>>({
-    resolver: zodResolver(registerFormSchema),
-    defaultValues: {
-      phoneNumber: "",
-      email: "",
-    },
+  const form = useForm<z.infer<typeof profileUpdateSchema>>({
+    resolver: zodResolver(profileUpdateSchema),
   });
 
   const { mutate, isLoading } = useMutation({
-    mutationFn: async (data: z.infer<typeof registerFormSchema>) => {
-      const response = await axios.post<RegisterResponse>(
-        `${import.meta.env.VITE_API_URL}/auth/register`,
-        { phoneNumber: data.phoneNumber, email: data.email },
-        {
-          timeout: 20000,
-        }
+    mutationFn: async (data: z.infer<typeof profileUpdateSchema>) => {
+      console.log(data);
+
+      const response = await apiAuth.put<ProfileUpdateResponse>(
+        `${import.meta.env.VITE_API_URL}/profile`,
+        { extraContact: data.extraContact }
       );
       return response;
     },
@@ -72,46 +68,69 @@ export const ProfileSettings = () => {
       }
     },
   });
-  const onSubmit = (values: z.infer<typeof registerFormSchema>) => {
+  const onSubmit = (values: z.infer<typeof profileUpdateSchema>) => {
     mutate(values);
   };
+  const { fields, append } = useFieldArray({
+    control: form.control,
+    name: "extraContact",
+  });
 
   return (
-    <div className="h-full flex justify-center items-center">
+    <div className="h-full flex justify-center items-center ">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="grid">
-          <FormField
-            control={form.control}
-            name="phoneNumber"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Numer telefonu</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Numer telefonu"
-                    type="text"
-                    {...field}
-                    pattern="[0-9]+"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Dodatkowy adres e-mail</FormLabel>
-                <FormControl>
-                  <Input placeholder="E-mail" {...field} type="email" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="grid gap-1 w-96 max-h-[calc(100%-20px)] p-4"
+        >
+          <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
+            Inne formy kontaktu
+          </h4>
+          {fields.map((field, index) => (
+            <div key={field.id} className="flex gap-2">
+              <FormField
+                control={form.control}
+                name={`extraContact.${index}.socialName`}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nazwa</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Nazwa" type="text" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name={`extraContact.${index}.socialLink`}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Kontakt</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Kontakt" type="text" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          ))}
+          {form?.getValues()?.extraContact?.length < 6 && (
+            <>
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                className="rounded-full mt-2"
+                onClick={() => {
+                  append({ socialName: "", socialLink: "" });
+                }}
+              >
+                <FiPlus />
+              </Button>
+            </>
+          )}
           <Button type="submit" className="mt-2" disabled={isLoading}>
             Prześlij
           </Button>

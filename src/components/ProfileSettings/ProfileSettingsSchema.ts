@@ -1,15 +1,18 @@
 import { z } from "zod";
 
-export const registerFormSchema = z.object({
-  phoneNumber: z
-    .string()
-    .length(9, "Numer musi składać się z 9 cyfr w formacie: 123123123")
-    .optional()
-    .or(z.literal("")),
-  email: z
-    .string()
-    .email({ message: "Email nie jest prawidłowy." })
-    .max(255)
-    .optional()
-    .or(z.literal("")),
+export const profileUpdateSchema = z.object({
+  extraContact: z
+    .object({
+      socialName: z
+        .string()
+        .min(2, "Nazwa jest za krótka")
+        .max(64, "Nazwa jest za długa")
+        .optional(),
+      socialLink: z
+        .string()
+        .min(2, "Nazwa jest za krótka")
+        .max(64, "Nazwa jest za długa")
+        .optional(),
+    })
+    .array(),
 });
