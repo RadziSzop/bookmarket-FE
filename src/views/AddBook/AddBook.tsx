@@ -24,7 +24,7 @@ import type {
   RegisterResponse,
 } from "../../types/response.ts";
 import { toast } from "react-hot-toast";
-import { addProductSchema } from "./AddProductSchema.ts";
+import { addBookSchema } from "./AddBookSchema.ts";
 import { useMutation } from "@tanstack/react-query";
 import {
   Select,
@@ -38,10 +38,10 @@ import { useState } from "react";
 import { apiAuth } from "@/lib/axios.ts";
 import { ScrollArea } from "../../components/ui/ScrollArea.tsx";
 
-export const AddProduct = () => {
+export const AddBook = () => {
   const [submitedFile, setSubmitedFile] = useState<File>();
-  const form = useForm<z.infer<typeof addProductSchema>>({
-    resolver: zodResolver(addProductSchema),
+  const form = useForm<z.infer<typeof addBookSchema>>({
+    resolver: zodResolver(addBookSchema),
     defaultValues: {
       title: "",
       class: "1",
@@ -84,7 +84,7 @@ export const AddProduct = () => {
     "Inne",
   ];
   const { mutate, isLoading } = useMutation({
-    mutationFn: async (data: z.infer<typeof addProductSchema>) => {
+    mutationFn: async (data: z.infer<typeof addBookSchema>) => {
       const formData = new FormData();
       formData.append("image", submitedFile!);
       formData.append("title", data.title);
@@ -127,7 +127,7 @@ export const AddProduct = () => {
       }
     },
   });
-  const onSubmit = (values: z.infer<typeof addProductSchema>) => {
+  const onSubmit = (values: z.infer<typeof addBookSchema>) => {
     if (!submitedFile) {
       toast.error("Dodaj zdjęcie");
     } else {

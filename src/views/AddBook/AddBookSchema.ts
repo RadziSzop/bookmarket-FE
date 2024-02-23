@@ -23,7 +23,7 @@ const subjectValues = [
   "Inne",
 ] as const;
 
-export const addProductSchema = z.object({
+export const addBookSchema = z.object({
   title: z
     .string()
     .min(5, { message: "Tytuł musi miec przynajmniej 5 znaków" })

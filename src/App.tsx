@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import { Navbar } from "./components/Navbar/Navbar";
 import { Login } from "./views/Login/Login";
 import { ProfileSettings } from "./components/ProfileSettings/ProfileSettings";
-import { AddProduct } from "./views/AddProduct/AddProduct";
+import { AddBook } from "./views/AddBook/AddBook";
 import { useEffect } from "react";
 import { loginFromCookie } from "./lib/loginFromCookie";
 import { Toaster } from "react-hot-toast";
@@ -28,7 +28,7 @@ function App() {
           <Route path="/not" element={<NotLogged />} />
           <Route path="/login" element={<Login />} />
           <Route path="/profile/settings" element={<ProfileSettings />} />
-          <Route path="/addproduct" element={<AddProduct />} />
+          <Route path="/add" element={<AddBook />} />
           <Route path="/book/:id" element={<Book />} />
         </Routes>
         <Toaster
