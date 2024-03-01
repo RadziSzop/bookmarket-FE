@@ -72,6 +72,24 @@ export type StoreResponse = ApiResponseSuccess<
     title: string;
   }[]
 >;
+export type MineBooksResponse = ApiResponseSuccess<
+  {
+    class: number;
+    condition: number;
+    id: number;
+    bookId: number;
+    image: string;
+    price: number;
+    subject: Subject | null;
+    title: string;
+    reservation: {
+      select: {
+        reservationEnd: Date;
+        userId: true;
+      };
+    } | null;
+  }[]
+>;
 export type BookResponse = ApiResponseSuccess<{
   class: number;
   condition: number;

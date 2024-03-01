@@ -47,7 +47,14 @@ export const Book = () => {
             <h4 className="text-5xl  text-zinc-300">
               {data?.price.toFixed(2)} zł
             </h4>
-            <Button className="h-14 px-10">KUP</Button>
+            <Button
+              className="h-14 px-10"
+              onClick={() => {
+                apiAuth.post("store/reserve", { id: data.id });
+              }}
+            >
+              Zarezerwuj
+            </Button>
           </div>
         </div>
       </div>
