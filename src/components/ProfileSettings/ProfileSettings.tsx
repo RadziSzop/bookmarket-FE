@@ -28,7 +28,6 @@ export const ProfileSettings = () => {
   const form = useForm<z.infer<typeof profileUpdateSchema>>({
     resolver: zodResolver(profileUpdateSchema),
   });
-  console.log(form?.getValues()?.extraContact?.length);
 
   const { mutate, isLoading } = useMutation({
     mutationFn: async (data: z.infer<typeof profileUpdateSchema>) => {
