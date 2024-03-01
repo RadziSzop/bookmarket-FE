@@ -7,7 +7,10 @@ interface Profile {
     role: "USER" | "ADMIN";
     profile: {
       name: string;
-      extraContact?: string;
+      extraContact?: {
+        socialName: string;
+        socialLink: string;
+      }[];
     };
   } | null;
 }
