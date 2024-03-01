@@ -7,8 +7,7 @@ interface Profile {
     role: "USER" | "ADMIN";
     profile: {
       name: string;
-      phoneNumber?: string;
-      contactEmail?: string;
+      extraContact?: string;
     };
   } | null;
 }
