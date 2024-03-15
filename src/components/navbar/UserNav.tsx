@@ -37,6 +37,9 @@ export const UserNav = ({ email }: Props) => {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
+          <Link to={"profile"}>
+            <DropdownMenuItem>Profil</DropdownMenuItem>
+          </Link>
           <Link to={"profile/settings"}>
             <DropdownMenuItem>Ustawienia</DropdownMenuItem>
           </Link>
