@@ -11,17 +11,14 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/Form.tsx";
-import { isAxiosError } from "axios";
-import type {
-  ApiResponseFailure,
-  ProfileUpdateResponse,
-} from "../../types/response.ts";
+import type { ProfileUpdateResponse } from "../../types/response.ts";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { profileUpdateSchema } from "./ProfileSettingsSchema.ts";
 import { useMutation } from "@tanstack/react-query";
 import { FiPlus } from "react-icons/fi";
 import { apiAuth } from "@/lib/axios.ts";
+import { handleApiErrors } from "@/lib/handleApiErrors.ts";
 
 export const ProfileSettings = () => {
   const navigate = useNavigate();
@@ -38,26 +35,8 @@ export const ProfileSettings = () => {
       );
       return response;
     },
-    onError: (error) => {
-      if (isAxiosError<ApiResponseFailure>(error)) {
-        if (
-          error.response &&
-          error.response.status !== 404 &&
-          error.response.status < 500
-        ) {
-          const errors = error.response.data.errors
-            .map(({ message }) => {
-              return message;
-            })
-            .join("\n");
-          toast.error(errors);
-        } else {
-          toast.error("Wystąpił błąd, spróbuj ponownie.");
-        }
-      } else {
-        toast.error("Wystąpił błąd, spróbuj ponownie.");
-      }
-    },
+    onError: (error) => handleApiErrors(error),
+
     onSuccess: async (data) => {
       if (data.data.success) {
         navigate("/");

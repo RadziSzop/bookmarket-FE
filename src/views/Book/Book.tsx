@@ -50,7 +50,7 @@ export const Book = () => {
             <Button
               className="h-14 px-10"
               onClick={() => {
-                apiAuth.post("store/reserve", { id: data.id });
+                apiAuth.post("store/reservation", { id: data.id });
               }}
             >
               Zarezerwuj

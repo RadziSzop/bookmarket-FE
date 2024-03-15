@@ -61,17 +61,30 @@ type Subject =
   | "Technika"
   | "Przyroda"
   | "Inne";
-export type StoreResponse = ApiResponseSuccess<
-  {
-    class: number;
-    condition: number;
-    id: number;
-    image: string;
-    price: number;
-    subject: Subject | null;
-    title: string;
-  }[]
->;
+
+export type StoreResponseOne = {
+  class: number;
+  condition: number;
+  id: number;
+  image: string;
+  price: number;
+  subject: Subject | null;
+  title: string;
+  reservation: {
+    user: {
+      email: string;
+      profile: {
+        extraContact: {
+          socialName: string;
+          socialLink: string;
+        }[];
+        name: string;
+      };
+    };
+    reservationEnd: Date;
+  } | null;
+};
+export type StoreResponse = ApiResponseSuccess<StoreResponseOne[]>;
 export type MineBooksResponse = ApiResponseSuccess<
   {
     class: number;

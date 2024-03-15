@@ -18,11 +18,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/Form.tsx";
-import { isAxiosError } from "axios";
-import type {
-  ApiResponseFailure,
-  RegisterResponse,
-} from "../../types/response.ts";
+import type { RegisterResponse } from "../../types/response.ts";
 import { toast } from "react-hot-toast";
 import { addBookSchema } from "./AddBookSchema.ts";
 import { useMutation } from "@tanstack/react-query";
@@ -37,6 +33,7 @@ import { DropZone } from "../../components/Dropzone/DropZone.tsx";
 import { useState } from "react";
 import { apiAuth } from "@/lib/axios.ts";
 import { ScrollArea } from "../../components/ui/ScrollArea.tsx";
+import { handleApiErrors } from "@/lib/handleApiErrors.ts";
 
 export const AddBook = () => {
   const [submitedFile, setSubmitedFile] = useState<File>();
@@ -97,26 +94,7 @@ export const AddBook = () => {
       const response = await apiAuth.post<RegisterResponse>("/store", formData);
       return response;
     },
-    onError: (error) => {
-      if (isAxiosError<ApiResponseFailure>(error)) {
-        if (
-          error.response &&
-          error.response.status !== 404 &&
-          error.response.status < 500
-        ) {
-          const errors = error.response.data.errors
-            .map(({ message }) => {
-              return message;
-            })
-            .join("\n");
-          toast.error(errors);
-        } else {
-          toast.error("Wystąpił błąd, spróbuj ponownie.");
-        }
-      } else {
-        toast.error("Wystąpił błąd, spróbuj ponownie.");
-      }
-    },
+    onError: (error) => handleApiErrors(error),
     onSuccess: async (data) => {
       if (data.data.success) {
         form.reset();
