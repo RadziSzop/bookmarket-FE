@@ -97,7 +97,7 @@ export const ProfileSettings = () => {
               />
             </div>
           ))}
-          {(form?.getValues()?.extraContact?.length < 6 ||
+          {(form?.getValues()?.extraContact?.length < 5 ||
             form?.getValues()?.extraContact?.length === undefined) && (
             <>
               <Button
