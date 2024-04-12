@@ -43,6 +43,9 @@ export const UserNav = ({ email }: Props) => {
           <Link to={"profile/settings"}>
             <DropdownMenuItem>Ustawienia</DropdownMenuItem>
           </Link>
+          <Link to={"yourbooks"}>
+            <DropdownMenuItem>Moje książki</DropdownMenuItem>
+          </Link>
         </DropdownMenuGroup>
         <DropdownMenuItem
           onClick={() => {

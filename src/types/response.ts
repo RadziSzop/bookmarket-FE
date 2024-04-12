@@ -67,6 +67,7 @@ export type StoreResponseOne = {
   condition: number;
   id: number;
   image: string;
+  bookId: number;
   price: number;
   subject: Subject | null;
   title: string;
