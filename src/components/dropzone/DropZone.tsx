@@ -10,7 +10,7 @@ interface Props {
 export const DropZone = ({ setSubmitedFile, submitedFile }: Props) => {
   const onDrop = useCallback(
     (acceptedFile: File[]) => {
-      if (acceptedFile[0]) {
+      if (acceptedFile[0] && acceptedFile[0].name.match(/\.(jpg|jpeg|png)$/)) {
         setSubmitedFile(acceptedFile[0]);
       } else {
         toast.error("Niepoprawny plik");
@@ -34,8 +34,8 @@ export const DropZone = ({ setSubmitedFile, submitedFile }: Props) => {
       "image/png": [".png"],
       "image/jpeg": [".jpg", ".jpeg"],
     },
-    multiple: false,
     maxFiles: 1,
+    multiple: false,
   });
   useEffect(() => {
     if (submitedFile && rootRef.current) {
