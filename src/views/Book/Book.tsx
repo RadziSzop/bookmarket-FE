@@ -1,7 +1,9 @@
 import { Button } from "@/components/ui/Button";
 import { apiAuth } from "@/lib/axios";
+import { handleApiErrors } from "@/lib/handleApiErrors";
 import { BookResponse } from "@/types/response";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 
 export const Book = () => {
@@ -13,6 +15,19 @@ export const Book = () => {
       const response = await apiAuth.get<BookResponse>(`store/${id}`);
       return response.data.data;
     },
+    onError: (error) => handleApiErrors(error),
+  });
+  const { mutate, isSuccess: isMutated } = useMutation({
+    mutationFn: async () => {
+      const response = await apiAuth.post("store/reservation", {
+        id: data?.id,
+      });
+      return response.data.data;
+    },
+    onSuccess: () => {
+      toast.success("Zarezerwowano");
+    },
+    onError: (error) => handleApiErrors(error),
   });
   if (isSuccess) {
     return (
@@ -48,9 +63,10 @@ export const Book = () => {
               {data?.price.toFixed(2)} zł
             </h4>
             <Button
+              disabled={data.reserved || isMutated}
               className="h-14 px-10"
               onClick={() => {
-                apiAuth.post("store/reservation", { id: data.id });
+                mutate();
               }}
             >
               Zarezerwuj

@@ -111,4 +111,5 @@ export type BookResponse = ApiResponseSuccess<{
   price: number;
   subject: Subject | null;
   title: string;
+  reserved: boolean;
 }>;
