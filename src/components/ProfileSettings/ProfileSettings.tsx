@@ -19,6 +19,8 @@ import { useMutation } from "@tanstack/react-query";
 import { FiPlus } from "react-icons/fi";
 import { apiAuth } from "@/lib/axios.ts";
 import { handleApiErrors } from "@/lib/handleApiErrors.ts";
+import { getProfile } from "@/lib/getProfile.ts";
+import { loginFromCookie } from "@/lib/loginFromCookie.ts";
 
 export const ProfileSettings = () => {
   const navigate = useNavigate();
@@ -38,6 +40,7 @@ export const ProfileSettings = () => {
 
     onSuccess: async (data) => {
       if (data.data.success) {
+        await loginFromCookie();
         navigate("/");
         toast.success("Udało się przesłać dane!");
       } else {

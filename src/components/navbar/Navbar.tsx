@@ -20,12 +20,14 @@ export const Navbar = () => {
 
         <div className="ml-auto flex items-center space-x-4">
           <ModeToggle />
-
           {profile ? (
             <>
-              <a href={`/add`}>
+              <Link to="/add">
                 <Button variant={"secondary"}>Sprzedaj</Button>
-              </a>
+              </Link>
+              <Link to="/yourbooks">
+                <Button variant={"secondary"}>Twoje książki</Button>
+              </Link>
               <UserNav email={profile.email} />
             </>
           ) : (

@@ -98,7 +98,6 @@ export const AddBook = () => {
     onSuccess: async (data) => {
       if (data.data.success) {
         form.reset();
-        form.reset();
         toast.success("Dodano książke!");
       } else {
         toast.error("Wystąpił błąd, spróbuj ponownie.");
@@ -114,141 +113,146 @@ export const AddBook = () => {
   };
   return (
     <div className="h-full flex justify-center items-center">
-      <Card className="">
-        <CardHeader>
-          <CardTitle>Dodaj książkę</CardTitle>
-          <CardDescription>
-            Podaj podstawowe informacje dotyczące książki
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-2">
-              <p className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                Zdjęcie
-              </p>
-              <DropZone
-                setSubmitedFile={setSubmitedFile}
-                submitedFile={submitedFile}
-              />
-              <FormField
-                control={form.control}
-                name="title"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Tytuł</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Tytuł" type="text" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+      <ScrollArea className="h-[calc(100%-57px)]">
+        <Card>
+          <CardHeader>
+            <CardTitle>Dodaj książkę</CardTitle>
+            <CardDescription>
+              Podaj podstawowe informacje dotyczące książki
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="grid gap-2"
+              >
+                <p className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                  Zdjęcie
+                </p>
+                <DropZone
+                  setSubmitedFile={setSubmitedFile}
+                  submitedFile={submitedFile}
+                />
+                <FormField
+                  control={form.control}
+                  name="title"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Tytuł</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Tytuł" type="text" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-              <FormField
-                control={form.control}
-                name="class"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Klasa</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Wybierz" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {classes.map(([value, label]) => (
-                          <SelectItem key={value} value={String(value)}>
-                            {label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="subject"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Przedmiot</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Wybierz" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent className="max-h-[15.25rem]">
-                        <ScrollArea>
-                          {subjects.map((value) => (
+                <FormField
+                  control={form.control}
+                  name="class"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Klasa</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Wybierz" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {classes.map(([value, label]) => (
                             <SelectItem key={value} value={String(value)}>
-                              {value}
+                              {label}
                             </SelectItem>
                           ))}
-                        </ScrollArea>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="price"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Cena</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Cena" {...field} type="number" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="condition"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Zużycie</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="subject"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Przedmiot</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Wybierz" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent className="max-h-[15.25rem]">
+                          <ScrollArea>
+                            {subjects.map((value) => (
+                              <SelectItem key={value} value={String(value)}>
+                                {value}
+                              </SelectItem>
+                            ))}
+                          </ScrollArea>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="price"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Cena</FormLabel>
                       <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Wybierz" />
-                        </SelectTrigger>
+                        <Input placeholder="Cena" {...field} type="number" />
                       </FormControl>
-                      <SelectContent>
-                        {conditions.map(([value, label]) => (
-                          <SelectItem key={value} value={String(value)}>
-                            {label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="condition"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Zużycie</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Wybierz" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {conditions.map(([value, label]) => (
+                            <SelectItem key={value} value={String(value)}>
+                              {label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-              <Button type="submit" className="mt-2" disabled={isLoading}>
-                Prześlij
-              </Button>
-            </form>
-          </Form>
-        </CardContent>
-      </Card>
+                <Button type="submit" className="mt-2" disabled={isLoading}>
+                  Prześlij
+                </Button>
+              </form>
+            </Form>
+          </CardContent>
+        </Card>
+      </ScrollArea>
     </div>
   );
 };

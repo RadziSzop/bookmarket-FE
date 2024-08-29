@@ -12,10 +12,10 @@ export const YourBooks = () => {
         <TabsTrigger value="myBooks">Moje książki</TabsTrigger>
         <TabsTrigger value="myReservations">Moje rezerwacje</TabsTrigger>
       </TabsList>
-      <TabsContent value="myBooks">
+      <TabsContent value="myBooks" className="w-full">
         <MyBooks />
       </TabsContent>
-      <TabsContent value="myReservations">
+      <TabsContent value="myReservations" className="w-full">
         <MyReservations />
       </TabsContent>
     </Tabs>

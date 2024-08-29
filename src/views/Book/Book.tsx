@@ -1,13 +1,24 @@
-import { Button } from "@/components/ui/Button";
+import { Button, buttonVariants } from "@/components/ui/Button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { apiAuth } from "@/lib/axios";
 import { handleApiErrors } from "@/lib/handleApiErrors";
-import { BookResponse } from "@/types/response";
+import { BookResponse, ReserveBook } from "@/types/response";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { format, set } from "date-fns";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 
 export const Book = () => {
   const conditions = ["Nowa", "Lekko zużyta", "Używana", "Zniszczona"];
+  const [isOpen, setIsOpen] = useState(false);
   const { id } = useParams();
   const { isSuccess, data } = useQuery({
     queryKey: [id],
@@ -17,18 +28,25 @@ export const Book = () => {
     },
     onError: (error) => handleApiErrors(error),
   });
-  const { mutate, isSuccess: isMutated } = useMutation({
+
+  const {
+    mutate,
+    isSuccess: isMutated,
+    data: mutationData,
+  } = useMutation({
     mutationFn: async () => {
-      const response = await apiAuth.post("store/reservation", {
+      const response = await apiAuth.post<ReserveBook>("store/reservation", {
         id: data?.id,
       });
       return response.data.data;
     },
     onSuccess: () => {
       toast.success("Zarezerwowano");
+      setIsOpen(true);
     },
     onError: (error) => handleApiErrors(error),
   });
+  console.log(mutationData);
   if (isSuccess) {
     return (
       <div className="h-full grid max-w-5xl mx-auto grid-cols-1 md:grid-cols-2 gap-4">
@@ -41,22 +59,10 @@ export const Book = () => {
           <h3 className="text-4xl mt-4 mb-6">{data.title}</h3>
           <div className={`grid mb-8 grid-cols-${data.subject ? 3 : 2}`}>
             {data.subject && (
-              <h3 className="text-2xl">
-                Przedmiot:
-                <br />
-                {data.subject}
-              </h3>
+              <h3 className="text-2xl">Przedmiot: {data.subject}</h3>
             )}
-            <h3 className="text-2xl">
-              Stan:
-              <br />
-              {conditions[data.condition - 1]}
-            </h3>
-            <h3 className="text-2xl">
-              Klasa:
-              <br />
-              {data.class}
-            </h3>
+            <h3 className="text-2xl">Stan: {conditions[data.condition - 1]}</h3>
+            <h3 className="text-2xl">Klasa: {data.class}</h3>
           </div>
           <div className="mt-auto justify-between items-end flex">
             <h4 className="text-5xl  text-zinc-300">
@@ -71,6 +77,39 @@ export const Book = () => {
             >
               Zarezerwuj
             </Button>
+            <Dialog open={Boolean(isOpen)} onOpenChange={setIsOpen}>
+              {mutationData && (
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Kontakt</DialogTitle>
+                    <DialogDescription className="text-zinc-300">
+                      {mutationData?.user.profile.name}
+                    </DialogDescription>
+                    <br />
+                    <DialogDescription className="text-white">
+                      Dodatkowe dane:
+                    </DialogDescription>
+                    <DialogDescription className="text-zinc-300">
+                      {mutationData?.user.profile.extraContact?.map(
+                        (contact) => (
+                          <div className="w-40 flex justify-between mx-auto sm:mx-0">
+                            <span>{contact.socialName}:</span>
+                            <span>{contact.socialLink}</span>
+                          </div>
+                        )
+                      )}
+                      <br />
+                      (rezerwacja ważna do:{" "}
+                      {format(
+                        new Date(mutationData.reservationEnd),
+                        "dd-MM-yyyy HH:mm"
+                      )}
+                      )
+                    </DialogDescription>
+                  </DialogHeader>
+                </DialogContent>
+              )}
+            </Dialog>
           </div>
         </div>
       </div>

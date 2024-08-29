@@ -1,4 +1,4 @@
-import { buttonVariants, Button } from "@/components/ui/Button";
+import { buttonVariants } from "@/components/ui/Button";
 import { DialogHeader } from "@/components/ui/dialog";
 import { apiAuth } from "@/lib/axios";
 import { StoreResponse } from "@/types/response";
@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/dialog";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
-import { FaTrashCan } from "react-icons/fa6";
 import { CancleReservation } from "../CancleReservation";
 
 export const MyReservations = () => {
@@ -19,16 +18,16 @@ export const MyReservations = () => {
     queryKey: ["store"],
     queryFn: async () => {
       const response = await apiAuth.get<StoreResponse>("/store/mine");
-      return response.data.data;
+      return response.data.data.filter((item) => item.reservation);
     },
   });
   return (
-    <div className="grid max-w-5xl mx-auto grid-cols-1 px-16 gap-4 p-4 sm:p-4">
-      {isSuccess &&
+    <div className="grid max-w-5xl mx-auto grid-cols-1 px-16 gap-4 w-full p-4 sm:p-4">
+      {isSuccess && data.length > 0 ? (
         data.map((item) => (
           <div
             key={item.id}
-            className="flex flex-col sm:flex-row w-full border-2 border-zinc-900 h-max sm:h-80 rounded-md p-4 gap-1 sm:gap-4"
+            className="flex flex-col flex-grow sm:flex-row w-full border-2 border-zinc-900 h-max sm:h-80 rounded-md p-4 gap-1 sm:gap-4"
           >
             <img
               className="sm:w-1/4 object-cover"
@@ -64,7 +63,7 @@ export const MyReservations = () => {
                             {item.reservation.user.email}
                           </DialogDescription>
                           <DialogDescription className="text-zinc-300">
-                            {item.reservation.user.profile.extraContact.map(
+                            {item.reservation.user.profile.extraContact?.map(
                               (contact) => (
                                 <div className="w-40 flex justify-between mx-auto sm:mx-0">
                                   <span>{contact.socialName}:</span>
@@ -84,17 +83,19 @@ export const MyReservations = () => {
                       </DialogContent>
                     </Dialog>
                     <CancleReservation item={item} />
-                    <Button variant={"secondary"}>Przedłuż rezerwację</Button>
                   </>
                 )}
-
-                <Button className="ml-auto" variant="secondary" size="icon">
-                  <FaTrashCan />
-                </Button>
               </div>
             </div>
           </div>
-        ))}
+        ))
+      ) : (
+        <div className="h-full flex">
+          <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold m-auto text-center">
+            Brak rezerwacji...
+          </h2>
+        </div>
+      )}
     </div>
   );
 };

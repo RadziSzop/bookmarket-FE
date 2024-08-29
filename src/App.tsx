@@ -12,6 +12,7 @@ import { NotLogged } from "./views/NotLogged/NotLogged";
 import { useSelector } from "react-redux";
 import { RootState } from "./redux/store";
 import { YourBooks } from "./views/YourBooks/YourBooks";
+import Profile from "./components/Profile/Profile";
 
 function App() {
   useEffect(() => {
@@ -32,6 +33,7 @@ function App() {
           <Route path="/add" element={<AddBook />} />
           <Route path="/book/:id" element={<Book />} />
           <Route path="/yourbooks" element={<YourBooks />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
         <Toaster
           toastOptions={{

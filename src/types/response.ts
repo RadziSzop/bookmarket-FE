@@ -38,8 +38,28 @@ export type ProfileResponse = ApiResponseSuccess<{
   role: "USER" | "ADMIN";
   profile: {
     name: string;
-    phoneNumber?: string;
-    contactEmail?: string;
+    extraContact:
+      | {
+          socialName: string;
+          socialLink: string;
+        }[]
+      | null;
+  };
+}>;
+
+export type ReserveBook = ApiResponseSuccess<{
+  reservationEnd: Date;
+  user: {
+    email: string;
+    profile: {
+      name: string;
+      extraContact:
+        | {
+            socialName: string;
+            socialLink: string;
+          }[]
+        | null;
+    };
   };
 }>;
 type Subject =

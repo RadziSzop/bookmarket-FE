@@ -10,6 +10,11 @@ export const getProfile = async (token: string) => {
     apiAuth.defaults.headers.common.Authorization = `Bearer ${token}`;
     const { data } = await apiAuth.get<ProfileResponse>("/profile");
     store.dispatch(setProfile({ profile: data.data }));
+    if (!data.data.profile.extraContact) {
+      if (window.location.pathname !== "/profile/settings") {
+        window.location.href = "/profile/settings";
+      }
+    }
   } catch (error) {
     console.log("get profile error: ", error);
     cookie.remove("token");

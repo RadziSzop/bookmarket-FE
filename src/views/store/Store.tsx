@@ -15,11 +15,8 @@ export const Store = () => {
       {isSuccess && data.length > 0 ? (
         <div className="h-full grid max-w-5xl mx-auto gap-4 grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 px-16 sm:p-4">
           {data.map((item) => (
-            <Link to={`/book/${item.id}`}>
-              <div
-                key={item.id}
-                className="w-full hover:scale-105 transition-transform  hover:border-2 hover:border-zinc-900 cursor-pointer h-80 rounded-md"
-              >
+            <Link to={`/book/${item.id}`} key={item.id}>
+              <div className="w-full hover:scale-105 transition-transform  hover:border-2 hover:border-zinc-900 cursor-pointer h-80 rounded-md">
                 <img
                   className="w-full p-4 h-3/4 object-cover"
                   src={`${import.meta.env.VITE_API_URL}/images/${item.image}`}
